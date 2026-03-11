@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Company DashBoard{% endblock %}</h1>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container text-white">
+
+    <h1 >Welcome {{ company.name }}</h1>
+  </div>
+</nav>
+
+
+{% endblock %}
+
+{% block content %}
+
+<!-- Company Details Card -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="card p-4 shadow mb-3 mt-4">
+      <h2 class="text-center">Company Details</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>Company Name:</strong> {{ company.name }}</p>
+          <p><strong>Industry:</strong> {{ company.industry }}</p>
+          <p><strong>Website:</strong> <a href="{{ company.website }}" target="_blank">{{ company.website }}</a></p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>HR Name:</strong> {{ company.hr_name }}</p>
+          <p><strong>HR Contact:</strong> {{ company.hr_contact }}</p>
+          <p><strong>About:</strong> {{ company.about_company }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-3 mt-4">
+      <div class="container text-center">
+        <h1>Pending Drives</h1>
+      </div>
+      <table class="table">
+        <tr>
+          <th>S NO</th>
+          <th>Drive Id</th>
+          <th>Drive Name</th>
+          <th colspan="2">Action</th>
+        </tr>
+        {% for drive in pending_drives %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ drive.drive_id }}</td>
+          <td>{{ drive.drive_name }}</td>
+          <td>
+            <a href="/company_dashboard?show_update={{ drive.drive_id }}" class="btn btn-warning btn-sm">Update</a>
+          </td>
+          <td><form action="{{ url_for('delete_drive', drive_id=drive.drive_id) }}" method="POST">
+              <button class="btn btn-primary btn-sm">Remove request</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      {% if show_update %}
+<div class="card p-4 shadow mb-3 mt-4">
+  <h2 class="text-center">Update Drive</h2>
+  <form action="{{ url_for('update_drive', drive_id=show_update) }}" method="POST">
+    <div class="mb-3">
+      <label>Drive Name:</label>
+      <input type="text" class="form-control" name="drive_name">
+    </div>
+    <div class="mb-3">
+      <label>Description:</label>
+      <textarea class="form-control" name="description" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label>Job Title:</label>
+      <input type="text" class="form-control" name="job_title">
+    </div>
+    <div class="mb-3">
+      <label>Eligibility:</label>
+      <input type="text" class="form-control" name="eligibility">
+    </div>
+    <div class="mb-3">
+      <label>Deadline:</label>
+      <input type="date" class="form-control" name="Deadline">
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning">Update Drive</button>
+    </div>
+  </form>
+</div>
+{% endif %}
+
+    </div>
+
+
+
+    <div class="card p-4 shadow mb-3 mt-4">
+      <div class="container text-center">
+        <h1>Ongoing Drives</h1>
+      </div>
+      <table class="table">
+        <tr>
+          <th>S NO</th>
+          <th>Drive Id</th>
+          <th>Drive Name</th>
+          <th>Applicants</th> 
+          <th colspan="2">Action</th>
+        </tr>
+        {% for drive in ongoing_drives %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ drive.drive_id }}</td>
+          <td>{{ drive.drive_name }}</td>
+          <td>{{ drive.applications|length }}</td>
+          <td>
+            <a href="{{ url_for('view_applications', drive_id=drive.drive_id) }}" class="btn btn-primary btn-sm">View Details</a>
+          </td>
+          <td><form action="{{url_for('close_drive',drive_id=drive.drive_id)}}" method="POST">
+            <button class="btn btn-primary btn-sm">Mark as complete</button>
+          </form>
+        </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+    <div class="card p-4 shadow mb-3 mt-4">
+      <div class="container text-center">
+        <h1>Closed Drives</h1>
+      </div>
+      <table class="table">
+        <tr>
+          <th>S NO</th>
+          <th>Drive Id</th>
+          <th>Drive Name</th>
+          <th>Applicants</th> 
+          <th>Action</th>
+        </tr>
+        {% for drive in closed_drives %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ drive.drive_id }}</td>
+          <td>{{ drive.drive_name }}</td>
+          <td>{{ drive.applications|length }}</td>
+          <td>
+            <a href="{{ url_for('view_applications', drive_id=drive.drive_id) }}" class="btn btn-primary btn-sm">View Details</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+  </div>
+
+  <div class="text-center ">
+    <div class="col-lg-3">
+  <div class="card p-4 shadow mb-3 mt-4">
+    <a href="/company_dashboard?show_form=true" class="btn btn-success btn-sm">Create a Drive</a>
+  </div>
+</div>
+ </div>
+ {% if show_form %}
+ <div class="card p-4 shadow mb-3 mt-4">
+
+
+  <div class="container text-center">
+    <h1>Create a Drive</h1>
+  </div>
+
+  <form action="{{ url_for('create_drive') }}" method="POST">
+    <div class="mb-3">
+      <label for="drive_name" class="form-label">Drive Name:</label>
+      <input type="text" class="form-control" id="drive_name" name="drive_name" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description:</label>
+      <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="job_title" class="form-label">Job Title:</label>
+      <input type="text" class="form-control" id="job_title" name="job_title" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="eligibility" class="form-label">Eligibility:</label>
+      <input type="text" class="form-control" id="eligibility" name="eligibility" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="Deadline" class="form-label">Applcation Deadline:</label>
+      <input type="date" class="form-control" id="Deadline" name="Deadline" required>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Create Drive</button>
+    </div>
+
+  </form>
+
+ </div>
+ {% endif %}
+
+
+</div>
+
+
+
+ 
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Student DashBoard{% endblock %}</h1>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container text-white">
+
+    <h1 >Welcome {{ student.first_name }}</h1>
+  </div>
+</nav>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-3 mt-4">
+      <div class="container text-center">
+        <h1>Registerd Organisations</h1>
+      </div>
+      <table class="table">
+        <tr>
+          <th>S No</th>
+          <th>Organisation Name</th>
+          <th>Action</th>
+        </tr>
+        {% for company in company %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ company.name }}</td>
+          <td><a href="{{url_for('view_company',id=company.id)}}" class="btn btn-primary btn-sm">
+            View Details
+          </a>
+            
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+
+    <!-- Applied Drives -->
+<div class="card p-4 shadow mb-3 mt-4">
+  <h2 class="text-center">Applied Drives</h2>
+  <table class="table">
+      <tr>
+          <th>S No</th>
+          <th>Drive Name</th>
+          <th>Company</th>
+          <th>Status</th>
+      </tr>
+      {% for application in current_applications %}
+      <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ application.placement_drive.drive_name }}</td>
+          <td>{{ application.placement_drive.company.name }}</td>
+          <td>{{ application.status }}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  <a href="{{ url_for('history') }}" class="btn btn-outline-primary btn-sm">View All</a>
+</div>
+
+<!-- Past Applications -->
+<div class="card p-4 shadow mb-3 mt-4">
+  <h2 class="text-center">Past Applications</h2>
+  <table class="table">
+      <tr>
+          <th>S No</th>
+          <th>Drive Name</th>
+          <th>Company</th>
+          <th>Status</th>
+      </tr>
+      {% for application in past_applications %}
+      <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ application.placement_drive.drive_name }}</td>
+          <td>{{ application.placement_drive.company.name }}</td>
+          <td>{{ application.status }}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  <a href="{{ url_for('history') }}" class="btn btn-outline-primary btn-sm">View All</a>
+</div>
+  </div>
+ 
+
+
+      
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+{% endblock %}

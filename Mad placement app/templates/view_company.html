@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}View Company{% endblock %}</h1>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container text-white">
+
+    <h1 >Welcome </h1>
+  </div>
+</nav>
+
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Overview</h1>
+        <p><strong>Company Name:</strong> {{ company.name }}</p>
+        <p><strong>Industry:</strong> {{ company.industry }}</p>
+        <p><strong>HR Name:</strong> {{ company.hr_name }}</p>
+        <p>{{ company.about_company}}</p>
+    </div>
+
+    <div class="col-lg-9">
+        <h1>Ongoing Drives</h1>
+        <div class="card p-3">
+        <table>
+            <tr>
+                <td>S NO</td>
+                <th>Drive Name</th>
+                <th>Job Title</th>
+                <th>Action</th>
+            </tr>
+            {% for drive in ongoing_drives %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{drive.drive_name}}</td>
+                <td>{{drive.job_title}}</td>
+                <td><a href="{{url_for('student_view_drive', drive_id=drive.drive_id)}}" class="btn btn-primary btn-sm">view Deatils</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

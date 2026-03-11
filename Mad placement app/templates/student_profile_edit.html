@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Student Profile Update{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12 col-lg-9 mb-3">
+
+      <div class="container text-center">
+        <h1>Update Details</h1>
+      </div>
+
+      <div class="card p-4 shadow mb-3">
+        <form action="{{ url_for('edit_profile') }}" method="POST">
+
+          <div class="container">
+            <h2>Personal Details:</h2>
+          </div>
+
+          <div class="card p-4 shadow mb-3">
+            <div class="container row justify-content-center">
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="username">UserName:</label>
+                <input name="username" id="username" type="text" class="form-control mt-1" value="{{ student.user.username }}">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="Password">New Password:</label>
+                <input type="password" class="form-control mt-1" placeholder="Leave blank to keep same" name="Password" id="Password">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control mt-1" name="email" id="email" value="{{ student.email }}">
+              </div>
+
+            </div>
+
+            <div class="container row justify-content-center">
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="firstname">FirstName:</label>
+                <input name="firstname" id="firstname" type="text" class="form-control mt-1" value="{{ student.first_name }}">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="lastname">LastName:</label>
+                <input type="text" class="form-control mt-1" name="lastname" id="lastname" value="{{ student.last_name }}">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="dob">Date Of Birth:</label>
+                <input type="date" class="form-control mt-1" name="dob" id="dob" value="{{ student.date_of_birth }}">
+              </div>
+
+            </div>
+
+            <div class="container row justify-content-center">
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="phone">Phone Number:</label>
+                <input name="phone" id="phone" type="tel" class="form-control mt-1" value="{{ student.phone }}">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control mt-1" name="address" id="address" value="{{ student.address }}">
+              </div>
+
+              <div class="container col-md-4 col-lg-4 mb-3">
+                <label>Gender:</label><br>
+                <input type="radio" id="female" name="gender" value="female" {% if student.gender == "female" %}checked{% endif %}>
+                <label for="female">Female</label>
+                <input type="radio" id="male" name="gender" value="male" {% if student.gender == "male" %}checked{% endif %}>
+                <label for="male">Male</label>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card p-4 shadow mb-3">
+            <div class="container">
+              <h2>Educational Details:</h2>
+            </div>
+
+            <div class="card p-4 shadow mb-3">
+              <div class="container"><h4>UG Details:</h4></div>
+
+              <div class="container row justify-content-center">
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="ug_collage_name">College Name:</label>
+                  <input name="ug_collage_name" type="text" class="form-control mt-1" value="{{ student.ug_collage_name }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="ug_degree">Degree:</label>
+                  <input type="text" class="form-control mt-1" name="ug_degree" value="{{ student.ug_degree }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="ug_branch">Branch:</label>
+                  <input type="text" class="form-control mt-1" name="ug_branch" value="{{ student.ug_branch }}">
+                </div>
+              </div>
+
+              <div class="container row justify-content-center">
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="ug_graduation_year">Graduation Year:</label>
+                  <input name="ug_graduation_year" type="number" class="form-control mt-1" value="{{ student.ug_graduation_year }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="ug_cgpa">CGPA:</label>
+                  <input type="number" class="form-control mt-1" name="ug_cgpa" step="0.01" min="0" max="10" value="{{ student.ug_cgpa }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-4 shadow mb-3">
+              <div class="container"><h4>PG Details:</h4></div>
+
+              <div class="container row justify-content-center">
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="pg_collage_name">College Name:</label>
+                  <input name="pg_collage_name" type="text" class="form-control mt-1" value="{{ student.pg_collage_name or '' }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="pg_degree">Degree:</label>
+                  <input type="text" class="form-control mt-1" name="pg_degree" value="{{ student.pg_degree or '' }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="pg_branch">Branch:</label>
+                  <input type="text" class="form-control mt-1" name="pg_branch" value="{{ student.pg_branch or '' }}">
+                </div>
+              </div>
+
+              <div class="container row justify-content-center">
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="pg_graduation_year">Graduation Year:</label>
+                  <input name="pg_graduation_year" type="number" class="form-control mt-1" value="{{ student.pg_graduation_year or '' }}">
+                </div>
+                <div class="container col-md-4 col-lg-4 mb-3">
+                  <label for="pg_cgpa">CGPA:</label>
+                  <input type="number" class="form-control mt-1" name="pg_cgpa" step="0.01" value="{{ student.pg_cgpa or '' }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-4 shadow mb-3">
+              <div class="container"><h4>Resume Link:</h4></div>
+              <div class="container col-md-12 mb-3">
+                <input name="resume" type="text" class="form-control mt-1" value="{{ student.resume or '' }}">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="container text-center">
+            <button class="btn btn-primary rounded">Update</button>
+            <a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary rounded">Cancel</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

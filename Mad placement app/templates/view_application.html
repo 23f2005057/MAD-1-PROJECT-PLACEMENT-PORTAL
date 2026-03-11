@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Drive Details{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 mb-3">
+        <div class="card p-4 shadow mb-3">
+            <div class="container text-center">
+            <h1>Applications for {{ drive.drive_name }}</h1>
+            <table class="table">
+              <tr>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              {% for application in applications %}
+              <tr>
+                <td>{{ application.student.first_name }} {{ application.student.last_name }}</td>
+                <td>{{ application.student.email }}</td>
+                <td>{{ application.status }}</td>
+                <td>
+                  <a href="{{ url_for('review_application', application_id=application.application_id) }}" class="btn btn-primary btn-sm">Review</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}  

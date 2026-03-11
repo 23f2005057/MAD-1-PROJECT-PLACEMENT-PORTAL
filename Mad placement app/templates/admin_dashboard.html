@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Admin DashBoard{% endblock %}</h1>
+{% endblock %}
+
+
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container text-white">
+
+    <h1 >Welcome admin</h1>
+  </div>
+</nav>
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <form method="GET" action="{{ url_for('admin_dashboard') }}" class="d-flex gap-2">
+    <input type="text" name="search" class="form-control" placeholder="Search student or company by id,name or email..." value="{{ search }}">
+    <button class="btn btn-primary">Search</button>
+  </form>
+</div>
+
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-md-3">
+      <div class="card text-center p-3 shadow bg-primary text-white">
+        <h3>{{ total_students }}</h3>
+        <p>Total Students</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3 shadow bg-success text-white">
+        <h3>{{ total_companies }}</h3>
+        <p>Total Companies</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3 shadow bg-warning text-white">
+        <h3>{{ total_drives }}</h3>
+        <p>Total Drives</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center p-3 shadow bg-danger text-white">
+        <h3>{{ total_applications }}</h3>
+        <p>Total Applications</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-3 mt-4">
+    
+      <div class="container text-center">
+        <h1>Approved Comapnies</h1>
+      </div>
+    <table class="table">
+      <tr>
+        <th>S NO</th>
+        <th>User ID</th>
+        <th>Company Name</th>
+        <th>Industry</th>
+        <th>Hr Name</th>
+        <th>status</th>
+        <th>Action</th>
+        <th>Delete</th>
+      </tr>
+      {% for company in companies if company.user.is_approved %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{  company.id }}</td>
+        <td>{{ company.name }} </td>
+        <td>{{ company.industry }}</td>
+        <td>{{ company.hr_name }}</td>
+        <td>{{ company.user.is_active}}</td>
+        <td>
+          {% if company.user.is_active %}
+
+          <form action="{{ url_for('blacklist_user', id=company.user.id) }}"  method="POST">
+
+            <button class="btn btn-danger btn-sm">Blacklist</button>
+          </form>
+
+          {% else %}
+
+          <form action="{{ url_for('unblacklist_user', id=company.user.id) }}"  method="POST">
+            <button class="btn btn-success btn-sm">Un-Blacklist</button>
+          </form>
+
+          {% endif %}
+
+        </td>
+        <td>
+          <form action="{{ url_for('delete_company', company_id=company.id) }}" method="POST"
+            onsubmit="return confirm('Are you sure?')">
+            <button class="btn btn-outline-danger btn-sm">Delete</button>
+          </form>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  </div>
+
+</div>
+
+
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-3 mt-4">
+    
+      <div class="container text-center">
+        <h1>Registerd Students</h1>
+      </div>
+    <table class="table">
+      <tr>
+        <th>S NO</th>
+        <th>User ID</th>
+        <th>Student Name</th>
+        <th>Date Of Birth</th>
+        <th>email</th>
+        <th>status</th>
+        <th>Action</th>
+        <th>Delete</th>
+      </tr>
+      {% for student in students %}
+      <tr>
+        <td>{{ loop.index }}</td> 
+        <td>{{  student.id }}</td>
+        <td>{{ student.first_name }} {{ student.last_name }}</td>
+        <td>{{ student.date_of_birth }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.user.is_active}}</td>
+        <td>
+          {% if student.user.is_active %}
+
+          <form action="{{ url_for('blacklist_user', id=student.user.id) }}"  method="POST">
+
+            <button class="btn btn-danger btn-sm">Blacklist</button>
+          </form>
+
+          {% else %}
+
+          <form action="{{ url_for('unblacklist_user', id=student.user.id) }}"  method="POST">
+            <button class="btn btn-success btn-sm">Un-Blacklist</button>
+          </form>
+
+          {% endif %}
+
+        </td>
+        <td><form action="{{ url_for('delete_student', student_id=student.id) }}" method="POST"
+          onsubmit="return confirm('Are you sure?')">
+        <button class="btn btn-outline-danger btn-sm">Delete</button>
+        </form>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  </div>
+
+</div>
+
+
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-6 mt-4">
+    
+      <div class="container text-center">
+        <h1>Company Applications</h1>
+      </div>
+    <table class="table">
+      <tr>
+        <th>S NO</th>
+        <th>User ID</th>
+        <th>Company Name</th>
+        <th>Industry</th>
+        <th>Hr Name</th>
+        <th>Action</th>
+      </tr>
+      {% for company in companies if not company.user.is_approved %}
+      
+      <tr>
+        <td>{{ loop.index }}</td> 
+        <td>{{  company.id }}</td>
+        <td>{{ company.name }} </td>
+        <td>{{ company.industry }}</td>
+        <td>{{ company.hr_name }}</td>
+        <td>
+          <form action="{{ url_for('approve_company', user_id=company.user.id) }}"  method="POST">
+            <button class="btn btn-success btn-sm">Approve</button>
+          </form>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  </div>
+
+</div>
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-6 mt-4">
+    
+      <div class="container text-center">
+        <h1>Pending Drive Applications</h1>
+      </div>
+    <table class="table">
+      <tr>
+        <th>Drive ID</th>
+        <th>Drive Name</th>
+        <th>Company Name</th>
+        <th colspan="3">Action</th>
+      </tr>
+      {% for drive in drives if drive.status == "pending" %}
+      <tr>
+        <td>{{  drive.drive_id }}</td>
+        <td>{{  drive.drive_name }} </td>
+        <td>{{  drive.company.name }}</td>
+        <td><a href="{{url_for('view_drive',drive_id=drive.drive_id)}}">
+            <button class="btn btn-primary btn-sm">View Details</button>
+        </a></td>
+        <td><form action="{{url_for('activate_drive', drive_id=drive.drive_id)}}" method="POST">
+          <button class="btn btn-success btn-sm">Accept</button>
+        </form></td>
+        <td><form action="{{url_for('reject_drive', drive_id=drive.drive_id)}}" method="POST">
+            <button class="btn btn-danger btn-sm">Reject</button>
+        </form></td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  </div>
+
+</div>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="card p-4 shadow mb-3 mt-4">
+      <div class="container text-center">
+        <h1>Ongoing Drives</h1>
+      </div>
+      <table class="table">
+        <tr>
+          <th>S NO</th>
+          <th>Drive No.</th>
+          <th>Drive Name</th>
+          <th>Company</th>
+          <th colspan="2">Actions</th>
+        </tr>
+        {% for drive in drives if drive.status == "active" %}
+        <tr>
+          <td>{{ loop.index }}</td> 
+          <td>{{ drive.drive_id }}</td>
+          <td>{{ drive.drive_name }}</td>
+          <td>{{ drive.company.name }}</td>
+          <td><a href="{{ url_for('view_drive', drive_id=drive.drive_id) }}" class="btn btn-primary btn-sm">View Details</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="card p-4 shadow mb-6 mt-4">
+    
+      <div class="container text-center">
+        <h1>Student Applications</h1>
+      </div>
+    <table class="table">
+      <tr>
+        <th>Application ID</th>
+        <th>Name</th>
+        <th>Drive Name</th>
+        <th>Company Name</th>
+        <th>Application Deadline</th>
+        <th>Action</th>
+      </tr>
+      {% for application in applications %}
+      <tr>
+        <td>{{  application.application_id }}</td>
+        <td>{{  application.student.first_name  }} {{ application.student.last_name }} </td>
+        <td>{{  application.placement_drive.drive_name }} </td>
+        <td>{{  application.placement_drive.company.name }}</td>
+        <td>{{  application.placement_drive.application_deadline  }}</td>
+        <td><a href="{{ url_for('admin_view_application', application_id=application.application_id) }}" class="btn btn-primary btn-sm">View Details</a></td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  </div>
+
+</div>
+
+
+{% endblock %}

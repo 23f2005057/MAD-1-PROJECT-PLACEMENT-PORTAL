@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Company SignUp{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-8 col-lg-6 mb-3">
+
+      <div class="container text-center">
+        <h1>Enter Company Details</h1>
+      </div>
+      
+
+      <div class="card p-4 shadow mb-3">
+
+        
+
+        <form action="{{ url_for('company_signup') }}" method="POST" >
+
+          <div class="container mb-3">
+            <label for="username">Enter UserName:</label>
+            <input name="username" id="username" type="text" class="form-control mt-1" placeholder="Enter UserName">
+          </div>
+
+          <div class="container mb-3">
+            <label for="password">Enter Password:</label>
+            <input type="password" class="form-control mt-1" placeholder="Password" name="password" id="password">
+
+          </div>
+
+          <div class="container mb-3">
+            <label for="CompanyName">Enter CompanyName:</label>
+            <input type="text" class="form-control mt-1" placeholder="CompanyName" name="CompanyName" id="CompanyName">
+
+          </div>
+
+          <div class="container mb-3">
+            <label for="industry">Industry:</label>
+            <input type="text" class="form-control mt-1" placeholder="Industry" name="industry" id="industry">
+
+          </div>
+
+          <div class="container mb-3">
+            <label for="website">website:</label>
+            <input type="url" class="form-control mt-1" placeholder="www.xyz.com" name="website" id="website">
+
+          </div>
+
+          <div class="container mb-3">
+            <label for="hr_name">HR Name:</label>
+            <input type="text" class="form-control mt-1" placeholder="Mr. xyz" name="hr_name" id="hr_name">
+
+          </div>
+
+          <div class="container mb-3">
+            <label for="hr_number">HR contact Number:</label>
+            <input type="tel" class="form-control mt-1" placeholder="96xxxxxxxx" name="hr_number" id="hr_number">
+
+          </div>
+          
+          <div class="container mb-3">
+          <label for="about">About Company</label>
+          <textarea class="form-control" id="about" name="about" rows="4" cols="40"></textarea>
+
+          </div>
+
+          <div class="container text-center">
+            <button class="btn btn-primary rounded">Submit</button>
+          </div>
+
+        </form>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+</div>
+ 
+{% endblock %}

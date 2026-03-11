@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}SignUp{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+
+    <h1 class="mb-5">Please select Type Of Account:</h1>
+  
+    <div class="d-flex justify-content-center gap-5 flex-wrap">
+  
+      <div>
+        <a href="{{ url_for('student_signup') }}">
+          <img src="{{ url_for('static', filename='student_icon.jpeg') }}"
+               class="img-fluid rounded shadow mb-3"
+               style="max-width:200px;">
+        </a>
+  
+        <form action="{{ url_for('student_signup') }}">
+          <button type="submit" class="btn btn-primary btn-lg">
+            Student Account
+          </button>
+        </form>
+      </div>
+  
+      <div>
+        <a href="{{ url_for('company_signup') }}">
+          <img src="{{ url_for('static', filename='company_icon.png') }}"
+               class="img-fluid rounded shadow mb-3"
+               style="max-width:200px;">
+        </a>
+  
+        <form action="{{ url_for('company_signup') }}">
+          <button type="submit" class="btn btn-success btn-lg">
+            Company Account
+          </button>
+        </form>
+      </div>
+  
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+
+    <div class="col-md-9 col-lg-6 mb-3">
+
+    <div class="container text-center">
+      <h1>Login Page</h1>
+    </div>
+
+    <div class="card p-4 shadow mb-3">
+
+      <form action="{{ url_for('login') }}" method="POST" >
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+    {% endfor %}
+{% endwith %}
+        <div class="container col-md-6 col-lg-6 mb-3">
+          <label for="username" class="form-label">UserName:</label>
+          <input name="username" id="username" type="text" class="form-control mt-1" placeholder="Enter UserName" required>
+        </div>
+
+        <div class="container col-md-6 col-lg-6  mb-3">
+          <label for="Password" class="form-label">Password:</label>
+          <input type="password" class="form-control mt-1" placeholder="Password" name="Password" id="Password" required>
+        </div>
+        
+        <div class="container col-md-6 col-lg-6  mb-3">
+          <label for="type" class="form-label">Account Type:</label>
+          <select class="form-select" name="role" id="role">
+            <option value="admin">Admin</option>
+            <option value="company">Company</option>
+            <option value="student">Student</option>
+          </select>
+
+        </div>
+
+        <div class="container text-center">
+          <button class="btn btn-success rounded">Submit</button>
+        </div>
+
+      </form>
+
+    </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+{% endblock %}
